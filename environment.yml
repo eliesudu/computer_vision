@@ -1,0 +1,13 @@
+name: cv_venv
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - opencv
+  - matplotlib
+  - pillow=9.4.0
+  - numba
+  - pip
+  - moviepy=1.0.3
+prefix: /Users/melikian/miniforge3/envs/cv_venv
