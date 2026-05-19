@@ -5,7 +5,7 @@ Created on Thu Apr 22 11:59:19 2021
 @author: droes
 """
 # You can use this library for oberserving keyboard presses
-import keyboard # pip install keyboard
+import keyboard # pip install hkeyboard
 
 from capturing import VirtualCamera
 from overlays import initialize_hist_figure, plot_overlay_to_image, plot_strings_to_image, update_histogram

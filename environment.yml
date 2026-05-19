@@ -1,13 +1,19 @@
 name: cv_venv
 channels:
   - conda-forge
+  - nodefaults
 dependencies:
   - python=3.11
-  - numpy
-  - opencv
-  - matplotlib
-  - pillow=9.4.0
-  - numba
   - pip
+  - numpy=1.23.5
+  - matplotlib=3.7.1
+  - pillow=9.4.0
+  - numba>=0.57
   - moviepy=1.0.3
-prefix: /Users/melikian/miniforge3/envs/cv_venv
+  - scikit-learn
+  - pandas
+  - pip:
+      - pyvirtualcam
+      - opencv-python==4.7.0.72
+      - keyboard==0.13.5
+
