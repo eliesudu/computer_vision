@@ -6,7 +6,10 @@ Created on Thu Apr 22 11:59:19 2021
 """
 # You can use this library for oberserving keyboard presses
 import keyboard # pip install hkeyboard
-
+import cv2
+import numpy as np
+import os
+import time
 from capturing import VirtualCamera
 from overlays import initialize_hist_figure, plot_overlay_to_image, plot_strings_to_image, update_histogram
 from basics import histogram_figure_numba
@@ -22,14 +25,27 @@ def custom_processing(img_source_generator):
     for sequence in img_source_generator:
         # Call your custom processing methods here! (e. g. filters)
         
-        
+        if keyboard.is_pressed('s'):
+            img_to_save = sequence.copy()
+
+            # Falls Bild float mit Werten 0–1 ist
+            if img_to_save.dtype != np.uint8:
+                if img_to_save.max() <= 1.0:
+                    img_to_save = img_to_save * 255
+
+                img_to_save = np.clip(img_to_save, 0, 255).astype(np.uint8)
+
+            filename = f"frame_{int(time.time())}.png"
+            path = './VirtualCamera/camera_tests'
+            cv2.imwrite(os.path.join(path , filename), img_to_save)
+            print("Saved:", filename)
 
         # Example of keyboard is pressed
-        # If you want to use this method then consider implementing a counter
+        # If you want to use this method then consider implementing a counterwhere pip
         # that ignores for example the next five keyboard press events to
         # "prevent" double clicks due to high fps rates
-        if keyboard.is_pressed('h') :
-            print('h pressed')
+        if keyboard.is_pressed('h'):
+            fig.savefig("histogram.png")
             
 
         ###
@@ -56,6 +72,7 @@ def custom_processing(img_source_generator):
 
         
         # Make sure to yield your processed image
+            
         yield sequence
 
 
@@ -75,7 +92,7 @@ def main():
             vc.capture_cv_video(0, bgr_to_rgb=True)
             
             # or your window screen
-            # vc.capture_screen()
+            #vc.capture_screen()
         )
     )
 
