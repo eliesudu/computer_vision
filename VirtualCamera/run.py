@@ -26,8 +26,6 @@ from basics import (
 )
 
 
-
-
 def screenshot(sequence, key):
     if keyboard.is_pressed(key):
             img_to_save = sequence.copy()
@@ -65,11 +63,11 @@ def custom_processing(img_source_generator):
         stats = image_statistics(img)
         ent = entropy(img)
 
-        img = linear_transformation(img, alpha=1.1, beta=5)
+        #img = linear_transformation(img, alpha=1.1, beta=5)
 
         img = equalize_histogram(img)
 
-        img = sharpen_filter(img)
+        #img = sharpen_filter(img)
 
         r_bars, g_bars, b_bars = histogram_figure_numba(img)
 
@@ -127,7 +125,7 @@ def main():
     vc.virtual_cam_interaction(
         custom_processing(
             # either camera stream
-            vc.capture_cv_video(0, bgr_to_rgb=True)
+            vc.capture_cv_video(bgr_to_rgb=True)
             
             # or your window screen
             #vc.capture_screen()

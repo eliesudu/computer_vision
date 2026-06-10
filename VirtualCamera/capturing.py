@@ -39,14 +39,19 @@ class VirtualCamera:
             yield img_np
 
             
-    def capture_cv_video(self, camera_id, bgr_to_rgb=False):
+    def capture_cv_video(self, camera_id=None, bgr_to_rgb=False):
         '''
         Establishes the connection to the camera via opencv
         Source: https://github.com/letmaik/pyvirtualcam/blob/master/samples/webcam_filter.py
         '''
 
         ip = "192.168.178.23:4747"
-        cv_vid = cv2.VideoCapture(f"http://{ip}/video")
+        #cv_vid = cv2.VideoCapture(f"http://{ip}/video")
+
+        if (camera_id is not None) and (camera_id >= 0):
+            cv_vid = cv2.VideoCapture(camera_id, cv2.CAP_MSMF)
+        else:
+            cv_vid = cv2.VideoCapture(f"http://{ip}/video")
         
         if not cv_vid.isOpened():
             raise RuntimeError('Video-Output cannot be opened.')
