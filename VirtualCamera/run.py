@@ -12,6 +12,7 @@ import os
 import time
 from capturing import VirtualCamera
 from overlays import initialize_hist_figure, plot_overlay_to_image, plot_strings_to_image, update_histogram
+
 from basics import (
     histogram_figure_numba,
     image_statistics,
@@ -57,7 +58,6 @@ def custom_processing(img_source_generator):
     fig, ax, background, r_plot, g_plot, b_plot = initialize_hist_figure()
 
     for sequence in img_source_generator:
-        # Screenshot vom aktuellen Original-Frame
         screenshot(sequence, key="s")
 
         img = sequence.copy()

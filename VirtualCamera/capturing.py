@@ -47,7 +47,7 @@ class VirtualCamera:
 
         ip = "192.168.178.23:4747"
         cv_vid = cv2.VideoCapture(f"http://{ip}/video")
-
+        
         if not cv_vid.isOpened():
             raise RuntimeError('Video-Output cannot be opened.')
             

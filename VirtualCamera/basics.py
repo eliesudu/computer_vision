@@ -128,11 +128,6 @@ def sobel_filter(np_img):
     return cv2.cvtColor(magnitude, cv2.COLOR_GRAY2RGB)
 
 def save_rgb_histogram(np_img, filename="histogram.png"):
-    """
-    Speichert ein RGB-Histogramm als PNG-Datei.
-    Erwartet RGB-Bild mit Shape (H, W, 3).
-    """
-
     img = np_img[:, :, :3].astype(np.uint8)
 
     plt.figure(figsize=(8, 5))
