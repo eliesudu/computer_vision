@@ -60,29 +60,19 @@ def custom_processing(img_source_generator):
         # Screenshot vom aktuellen Original-Frame
         screenshot(sequence, key="s")
 
-        # Kopie erstellen, damit Original nicht direkt verändert wird
         img = sequence.copy()
 
-        # 1. Basic statistics auf dem aktuellen Frame
         stats = image_statistics(img)
         ent = entropy(img)
 
-        # 2. Linear transformation
         img = linear_transformation(img, alpha=1.1, beta=5)
 
-        # 3. Histogram equalization
         img = equalize_histogram(img)
 
-        # 4. Filter deiner Wahl
         img = sharpen_filter(img)
-        # alternativ:
-        # img = blur_filter(img)
-        # img = sobel_filter(img)
 
-        # 5. RGB-Histogramm für das verarbeitete Bild berechnen
         r_bars, g_bars, b_bars = histogram_figure_numba(img)
 
-        # 6. Histogramm aktualisieren
         update_histogram(
             fig,
             ax,
@@ -95,10 +85,8 @@ def custom_processing(img_source_generator):
             b_bars
         )
 
-        # 7. Histogramm als Overlay ins Bild zeichnen
         img = plot_overlay_to_image(img, fig)
 
-        # 8. Textwerte anzeigen
         display_text_arr = [
             f"Entropy: {ent:.2f}",
 
@@ -122,15 +110,15 @@ def custom_processing(img_source_generator):
         if cv2.waitKey(1) & 0xFF == ord("q"):
             cv2.destroyAllWindows()
             return
-        # Genau EIN yield pro Frame
+        
         yield img
 
 
 
 def main():
     # change according to your settings
-    width = 1920
-    height = 1080
+    width = 1280
+    height = 720
     fps = 30
     
     # Define your virtual camera
@@ -139,10 +127,10 @@ def main():
     vc.virtual_cam_interaction(
         custom_processing(
             # either camera stream
-            #vc.capture_cv_video(0, bgr_to_rgb=True)
+            vc.capture_cv_video(0, bgr_to_rgb=True)
             
             # or your window screen
-            vc.capture_screen()
+            #vc.capture_screen()
         )
     )
 
