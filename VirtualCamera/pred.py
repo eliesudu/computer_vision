@@ -32,7 +32,6 @@ def predict():
         if not ret:
             break
 
-        # ── YOLO genau wie im Original ──
         results = model.predict(
             frame,
             conf=0.55,
@@ -41,19 +40,18 @@ def predict():
             verbose=False
         )
 
-        # annotated_frame vom Original übernehmen (alle Boxen bleiben)
         annotated_frame = results[0].plot()
 
         h, w = annotated_frame.shape[:2]
 
-        # ── Trennlinie einzeichnen ──
+
         cv2.line(annotated_frame, (0, SPLIT_Y), (w, SPLIT_Y), (200, 200, 200), 1)
         cv2.putText(annotated_frame, "TISCHKARTEN", (10, SPLIT_Y - 10),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS["Tischkarten"], 2)
         cv2.putText(annotated_frame, "SPIELER", (10, SPLIT_Y + 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS["Spieler"], 2)
 
-        detections = defaultdict(dict)  # dict statt list: card → beste conf
+        detections = defaultdict(dict)  
 
         for box in results[0].boxes:
             x1, y1, x2, y2 = map(int, box.xyxy[0])
@@ -67,7 +65,6 @@ def predict():
             if card not in detections[zone] or conf > detections[zone][card]:
                 detections[zone][card] = conf
 
-        # ── Zusammenfassung unten im Bild ──
         tisch   = "  ".join(detections["Tischkarten"].keys()) or "—"
         spieler = "  ".join(detections["Spieler"].keys())     or "—"
 

@@ -20,7 +20,7 @@ def initialize_hist_figure():
     fig = plt.figure()
     ax  = fig.add_subplot(111)
     ax.set_xlim([-0.5, 255.5])
-    # fixed size (you can normalize your values between 0, 3 or other ranges to never exceed this limit)
+
     ax.set_ylim([0,3])
     fig.canvas.draw()
     background = fig.canvas.copy_from_bbox(ax.bbox)
