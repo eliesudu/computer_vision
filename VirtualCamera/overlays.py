@@ -78,7 +78,7 @@ def plot_overlay_to_image(np_img, plt_figure):
 
 
 
-def plot_strings_to_image(np_img, list_of_string, text_color=(255,0,0), right_space=400, top_space=50):
+def plot_strings_to_image(np_img, list_of_string, text_color=(255,0,0), right_space=400, top_space=50, line_height=30):
     '''
     Plots the string parameters below each other, starting from top right.
     Use this function for example to plot the default image characteristics.
@@ -86,7 +86,7 @@ def plot_strings_to_image(np_img, list_of_string, text_color=(255,0,0), right_sp
     '''
     y_start = top_space
     min_size = right_space
-    line_height = 20
+    line_height = line_height
     (h, w, c) = np_img.shape
     if w < min_size:
         raise Exception('Image too small in width to print additional text.')

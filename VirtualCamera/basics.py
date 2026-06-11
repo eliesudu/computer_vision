@@ -66,9 +66,9 @@ def histogram_figure_numba(np_img):
 
     for y in range(h):
         for x in range(w):
-            r = np_img[y, x, 0]
-            g = np_img[y, x, 1]
-            b = np_img[y, x, 2]
+            r = int(np_img[y, x, 0])
+            g = int(np_img[y, x, 1])
+            b = int(np_img[y, x, 2])
 
             r_hist[r] += 1
             g_hist[g] += 1
@@ -80,8 +80,10 @@ def histogram_figure_numba(np_img):
 
     if max_r > 0:
         r_hist = r_hist / max_r * 3.0
+
     if max_g > 0:
         g_hist = g_hist / max_g * 3.0
+
     if max_b > 0:
         b_hist = b_hist / max_b * 3.0
 

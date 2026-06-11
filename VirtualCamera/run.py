@@ -51,23 +51,70 @@ def screenshot(sequence, key):
 # Example function
 # You can use this function to process the images from opencv
 # This function must be implemented as a generator function
+
 def custom_processing(img_source_generator):
     # use this figure to plot your histogram
     fig, ax, background, r_plot, g_plot, b_plot = initialize_hist_figure()
+    
+    useBlur = False
+    useTransform = False
+    useEqualize = False
+    useSobel = False
+
+    prev_b = False
+    prev_t = False
+    prev_e = False
+    prev_s = False
+
+    frame_counter = 0
 
     for sequence in img_source_generator:
         screenshot(sequence, key="s")
 
         img = sequence.copy()
-
         stats = image_statistics(img)
         ent = entropy(img)
 
-        #img = linear_transformation(img, alpha=1.1, beta=5)
 
-        img = equalize_histogram(img)
+        b_pressed = keyboard.is_pressed('b')
+        t_pressed = keyboard.is_pressed('t')
+        e_pressed = keyboard.is_pressed('e')
+        s_pressed = keyboard.is_pressed('f')
 
-        #img = sharpen_filter(img)
+        if b_pressed and not prev_b:
+            useBlur = not useBlur
+            print("Blur:", useBlur)
+
+        if t_pressed and not prev_t:
+            useTransform = not useTransform
+            print("Linear Transform:", useTransform)
+
+        if e_pressed and not prev_e:
+            useEqualize = not useEqualize
+            print("Equalization:", useEqualize)
+
+        if s_pressed and not prev_s:
+            useSobel = not useSobel
+            print("Sobel:", useSobel)
+
+        prev_b = b_pressed
+        prev_t = t_pressed
+        prev_e = e_pressed
+        prev_s = s_pressed
+
+        if useTransform:
+            img = linear_transformation(img, alpha=1.1, beta=5)
+
+        if useEqualize:
+            img = equalize_histogram(img)
+
+        if useBlur:
+            img = blur_filter(img)
+
+        if useSobel:
+            img = sobel_filter(img)
+
+        frame_counter += 1
 
         r_bars, g_bars, b_bars = histogram_figure_numba(img)
 
@@ -95,9 +142,14 @@ def custom_processing(img_source_generator):
             f"R mode: {stats['R']['mode']}, min/max: {stats['R']['min']}/{stats['R']['max']}",
             f"G mode: {stats['G']['mode']}, min/max: {stats['G']['min']}/{stats['G']['max']}",
             f"B mode: {stats['B']['mode']}, min/max: {stats['B']['min']}/{stats['B']['max']}",
+
+            f"Blur (b): {'ON' if useBlur else 'OFF'}",
+            f"Linear Transform (t): {'ON' if useTransform else 'OFF'}",
+            f"Equalization (e): {'ON' if useEqualize else 'OFF'}",
+            f"Sobel (f): {'ON' if useSobel else 'OFF'}"
         ]
 
-        img = plot_strings_to_image(img, display_text_arr)
+        img = plot_strings_to_image(img, display_text_arr, line_height=25)
 
 
         cv2.imshow("Processed Frame", cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
@@ -117,7 +169,7 @@ def main():
     # change according to your settings
     width = 1280
     height = 720
-    fps = 30
+    fps = 60
     
     # Define your virtual camera
     vc = VirtualCamera(fps, width, height)
@@ -125,7 +177,7 @@ def main():
     vc.virtual_cam_interaction(
         custom_processing(
             # either camera stream
-            vc.capture_cv_video(bgr_to_rgb=True)
+            vc.capture_cv_video(0,bgr_to_rgb=True)
             
             # or your window screen
             #vc.capture_screen()
